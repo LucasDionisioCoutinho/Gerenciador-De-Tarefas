@@ -2,18 +2,23 @@ const daySelect = document.getElementById("daySelect");
 const taskList = document.getElementById("taskList");
 let tasks = JSON.parse(localStorage.getItem("tasks")) || {}; // Carrega as tarefas salvas
 
-// Preenche o dropdown com os dias do mês
-for (let i = 1; i <= 30; i++) {
-    let option = document.createElement("option");
-    option.value = `Dia ${i}`;
-    option.textContent = `Dia ${i}`;
-    daySelect.appendChild(option);
+// Função para preencher o dropdown com os dias do mês
+function populateDaySelect() {
+    daySelect.innerHTML = ""; // Limpa para evitar duplicatas
+    for (let i = 1; i <= 30; i++) {
+        let option = document.createElement("option");
+        option.value = `Dia ${i}`;
+        option.textContent = `Dia ${i}`;
+        daySelect.appendChild(option);
+    }
 }
 
+// Salvar as tarefas no LocalStorage
 function saveTasks() {
-    localStorage.setItem("tasks", JSON.stringify(tasks)); // Salva no localStorage
+    localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
+// Adicionar uma nova tarefa
 function addTask() {
     const taskInput = document.getElementById("taskInput");
     const taskText = taskInput.value.trim();
@@ -30,33 +35,37 @@ function addTask() {
 
     tasks[selectedDay].push({ text: taskText, completed: false });
     taskInput.value = "";
-    saveTasks();  // Salva ao adicionar tarefa
-    displayTasks();
+    saveTasks();
+    displayTasks();  // Atualiza a lista de tarefas
 }
 
+// Alternar estado de conclusão da tarefa
 function toggleTask(day, index) {
     tasks[day][index].completed = !tasks[day][index].completed;
-    saveTasks();  // Salva ao marcar como concluída
+    saveTasks();
     displayTasks();
 }
 
+// Excluir uma tarefa
 function deleteTask(day, index) {
     tasks[day].splice(index, 1);
     if (tasks[day].length === 0) {
-        delete tasks[day]; // Remove o dia se não houver tarefas
+        delete tasks[day];
     }
-    saveTasks();  // Salva ao excluir
+    saveTasks();
     displayTasks();
 }
 
+// Excluir todas as tarefas de um dia
 function deleteDay(day) {
     delete tasks[day];
-    saveTasks();  // Salva ao excluir o dia
+    saveTasks();
     displayTasks();
 }
 
+// Exibir tarefas
 function displayTasks() {
-    taskList.innerHTML = "";
+    taskList.innerHTML = ""; // Limpa a lista antes de recriá-la
 
     for (const [day, taskArray] of Object.entries(tasks)) {
         let dayDiv = document.createElement("div");
@@ -99,15 +108,20 @@ function displayTasks() {
                 statusSpan.textContent = "Concluída";
             }
 
+            let taskButtonsDiv = document.createElement("div");
+            taskButtonsDiv.classList.add("task-buttons");
+
             let deleteTaskBtn = document.createElement("button");
             deleteTaskBtn.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
             deleteTaskBtn.classList.add("delete-task");
             deleteTaskBtn.onclick = () => deleteTask(day, index);
 
+            taskButtonsDiv.appendChild(deleteTaskBtn);
+
             taskDiv.appendChild(checkbox);
             taskDiv.appendChild(taskSpan);
             taskDiv.appendChild(statusSpan);
-            taskDiv.appendChild(deleteTaskBtn);
+            taskDiv.appendChild(taskButtonsDiv);
 
             tasksContainer.appendChild(taskDiv);
         });
@@ -119,6 +133,7 @@ function displayTasks() {
 
 // Carrega as tarefas ao abrir a página
 window.onload = function () {
-    displayTasks();
+    populateDaySelect(); // Preenche o select com os dias
+    displayTasks(); // Mostra as tarefas salvas
 };
 

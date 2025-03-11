@@ -1,14 +1,16 @@
+:root {
+    --fundo: #C0C8CA;
+    --CorDia: #2e4156;
+    --Corcompletado: #D4D8DD;
+}
+
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
     text-align: center;
     background-color: var(--fundo);
 }
-:root {
-    --fundo: #C0C8CA;
-    --CorDia: #2e4156;
-    --Corcompletado: #D4D8DD;
-}
+
 .container {
     max-width: 400px;
     margin: auto;
@@ -24,6 +26,7 @@ select, input, button {
     margin-top: 20px;
 }
 
+/* Estilo do cabeçalho de cada dia */
 .day {
     font-weight: bold;
     margin-top: 10px;
@@ -31,31 +34,42 @@ select, input, button {
     padding: 8px;
     border-radius: 5px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Mantém os elementos alinhados */
     align-items: center;
     color: white;
     height: 25px;
 }
 
+/* Contêiner das tarefas */
 .tasks-container {
     margin-left: 15px;
 }
 
+/* Estilizando cada tarefa */
 .task {
     display: flex;
     align-items: center;
+    justify-content: flex-start; /* Mantém os elementos alinhados à esquerda */
+    width: 100%;
     margin: 5px 0;
+    gap: 10px; /* Dá um espaçamento entre o checkbox e o texto */
+}
+.task span {
+    flex-grow: 1; /* Faz o texto ocupar o espaço restante sem centralizar */
 }
 
+/* Tarefa concluída */
 .completed {
     text-decoration: line-through;
-    color: var(--Corcompletado);
+    color: black;
 }
 
+/* Checkbox */
 .checkbox {
     margin-right: 8px;
 }
 
+/* Status da tarefa */
 .status {
     margin-left: 10px;
     padding: 2px 6px;
@@ -69,16 +83,22 @@ select, input, button {
     font-weight: bold;
 }
 
+/* Contêiner para os botões de ação */
+.task-buttons {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Espaço entre os botões */
+}
+
+/* Estilizando os botões */
 .delete-task, .delete-day {
     background: none;
     border: none;
     cursor: pointer;
     font-size: 16px;
-    margin-left: 10px;
     color: white;
 }
 
 .delete-day {
     font-size: 18px;
 }
-
