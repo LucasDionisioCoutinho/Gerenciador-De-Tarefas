@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100..900&display=swap');
+
 :root {
     --fundo: #C0C8CA;
     --CorDia: #2e4156;
@@ -5,25 +7,133 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Roboto", sans-serif;
     margin: 20px;
     text-align: center;
     background-color: var(--fundo);
 }
+h2 {
+    font-weight: 800;
+}
+
+
 
 .container {
     max-width: 400px;
     margin: auto;
+    height: 800px;
 }
 
 select, input, button {
     margin: 5px;
     padding: 8px;
+    border-radius: 5px;
+}
+input {
+    border: 2px solid transparent; /* Define a borda como transparente */
+    border-radius: 8px; /* Bordas arredondadas */
+    background-image: linear-gradient(white, white), 
+                      linear-gradient(to bottom, rgb(103, 170, 86), rgb(75, 238, 11)); /* Cor de fundo e borda */
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    padding: 8px; /* Espaçamento interno */
+    outline: none; /* Remove o contorno padrão */
+    transition: 0.3s;
+}
+input:focus {
+    border: 2px solid transparent; /* Mantém a borda transparente */
+    background-image: linear-gradient(white, white), 
+                      linear-gradient(to bottom, rgb(103, 170, 86), rgb(75, 238, 11)); /* Inverte o gradiente ao focar */
+}
+select {
+    border: 2px solid transparent; /* Define a borda como transparente */
+    border-radius: 8px; /* Bordas arredondadas */
+    background-image: linear-gradient(white, white), 
+                      linear-gradient(to bottom, rgb(103, 170, 86), rgb(75, 238, 11)); /* Cor de fundo e borda */
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    padding: 8px; /* Espaçamento interno */
+    outline: none; /* Remove o contorno padrão */
+    transition: 0.3s;
+}
+select:focus {
+    border: 2px solid transparent; /* Mantém a borda transparente */
+    background-image: linear-gradient(white, white), 
+                      linear-gradient(to bottom,rgb(103, 170, 86), rgb(75, 238, 11)); /* Inverte o gradiente ao focar */
 }
 
+.task-input-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Espaço entre os elementos */
+    width: 100%;
+}
+.bookmarkBtn {
+    width: 80px;
+    height: 40px;
+    border-radius: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.349);
+    background-color: rgb(12, 12, 12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition-duration: 0.3s;
+    overflow: hidden;
+  }
+  
+  .IconContainer {
+    width: 25px;
+    height: 25px;
+    background: linear-gradient(to bottom, rgb(103, 170, 86), rgb(75, 238, 11));
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    z-index: 2;
+    transition-duration: 0.3s;
+  }
+  
+  .icon {
+    border-radius: 1px;
+  }
+  
+  .text {
+    height: 100%;
+    width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    z-index: 1;
+    transition-duration: 0.3s;
+    font-size: 1.04em;
+  }
+  
+  .bookmarkBtn:hover .IconContainer {
+    width: 90px;
+    transition-duration: 0.3s;
+  }
+  
+  .bookmarkBtn:hover .text {
+    transform: translate(10px);
+    width: 0;
+    font-size: 0;
+    transition-duration: 0.3s;
+  }
+  
+  .bookmarkBtn:active {
+    transform: scale(0.95);
+    transition-duration: 0.3s;
+  }
+  
 .task-list {
     text-align: left;
     margin-top: 20px;
+    background-color: rgba(0, 0, 0, 0.925);
+    color: white;
+    
 }
 
 /* Estilo do cabeçalho de cada dia */
@@ -61,13 +171,15 @@ select, input, button {
 /* Tarefa concluída */
 .completed {
     text-decoration: line-through;
-    color: black;
+    color: rgb(75, 238, 11);
 }
 
 /* Checkbox */
 .checkbox {
     margin-right: 8px;
+    accent-color: rgb(75, 238, 11);
 }
+
 
 /* Status da tarefa */
 .status {
@@ -102,3 +214,5 @@ select, input, button {
 .delete-day {
     font-size: 18px;
 }
+
+
