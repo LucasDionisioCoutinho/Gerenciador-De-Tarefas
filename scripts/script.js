@@ -162,10 +162,11 @@ window.onload = function () {
     displayTasks(); // Mostra as tarefas salvas
 };
 
-if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("service-worker.js")
-        .then(() => console.log("Service Worker registrado!"))
-        .catch((error) => console.log("Erro ao registrar Service Worker:", error));
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js')
+    .then(() => console.log("Service Worker registrado com sucesso!"))
+    .catch(error => console.log("Erro ao registrar Service Worker:", error));
 }
+
 
 
