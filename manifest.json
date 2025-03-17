@@ -2,7 +2,7 @@
 {
     "name": "Minhas Tarefas",
     "short_name": "Tasks",
-    "start_url": "/",
+    "start_url": "/Gerenciador-De-Tarefas/index.html",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#007bff",
