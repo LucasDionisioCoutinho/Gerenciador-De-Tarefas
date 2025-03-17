@@ -101,6 +101,31 @@ function displayTasks() {
                 taskSpan.classList.add("completed");
             }
 
+            taskSpan.onclick = function () {
+                if (task.completed) {
+                    return;
+                }
+
+                let input = document.createElement('input');
+                input.type = "text";
+                input.value = task.text; // vai colocar o texto atual no input
+
+                input.onblur = function () {
+                    task.text = input.value.trim(); // vai atualizar o texto da tarefa
+                    saveTasks();
+                    displayTasks();
+                };
+
+                input.onkeydown = function (event) {
+                    if (event.key === "Enter") {
+                        input.blur(); // vai focar no input e, assim, disparar o evento blur
+                    }
+                };
+                taskDiv.replaceChild(input, taskSpan);
+                input.focus();
+                
+            }
+
             let statusSpan = document.createElement("span");
             statusSpan.classList.add("status");
             if (task.completed) {
