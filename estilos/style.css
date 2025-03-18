@@ -1,21 +1,49 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100..900&display=swap');
 
 :root {
-    --fundo: #C0C8CA;
+    --fundoescuro: #293431;
     --CorDia: #2e4156;
     --Corcompletado: #D4D8DD;
+    --fundoclaro: #C0C8CA;
 }
 
 body {
     font-family: "Roboto", sans-serif;
     margin: 20px;
     text-align: center;
-    background-color: var(--fundo);
+    background-color: var(--fundoescuro);
 }
 h2 {
     font-weight: 800;
+    color: white;
 }
-
+.dark-mode {
+    background-color: #e3eed4;
+    font-family: "Roboto", sans-serif;
+    
+}
+.dark-mode button {
+    background-color: var(--fundoescuro);
+    color: #e3eed4;
+    
+}
+.dark-mode h2 {
+    color:  black;
+}
+.dark-mode .day {
+    background-color: #6b9071;
+    color: black;
+    font-weight: bold;
+}
+.dark-mode .delete-day,
+.dark-mode .delete-task {
+    color: white;
+    
+}
+.dark-mode .task-list {
+    color: black;
+    background-color: #AEC3B0;
+}
 
 
 .container {
