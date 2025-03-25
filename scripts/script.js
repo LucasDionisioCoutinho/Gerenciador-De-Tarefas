@@ -3,7 +3,7 @@ const taskList = document.getElementById("taskList");
 let tasks = JSON.parse(localStorage.getItem("tasks")) || {}; // Carrega as tarefas salvas
 
 // Função para preencher o dropdown com os dias do mês
-function populateDaySelect() {
+/*function populateDaySelect() {
     daySelect.innerHTML = ""; // Limpa para evitar duplicatas
     for (let i = 1; i <= 30; i++) {
         let option = document.createElement("option");
@@ -11,6 +11,22 @@ function populateDaySelect() {
         option.textContent = `Dia ${i}`;
         daySelect.appendChild(option);
     }
+}*/
+
+// Dias da semana em ordem correta
+const weekDays = [
+     "Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira",
+    "Quinta-feira", "Sexta-feira", "Sábado"
+];
+// Preenche o select com os dias da semana  
+function populateDaySelect() {
+    daySelect.innerHTML = "";
+    weekDays.forEach(day => {
+        let option = document.createElement("option");
+        option.value = day;
+        option.textContent = day;
+        daySelect.appendChild(option);
+    });
 }
 
 // Salvar as tarefas no LocalStorage
@@ -64,7 +80,7 @@ function deleteDay(day) {
 }
 
 // Exibir tarefas
-function displayTasks() {
+/*function displayTasks() {
     taskList.innerHTML = ""; // Limpa a lista antes de recriá-la
 
     for (const [day, taskArray] of Object.entries(tasks)) {
@@ -154,6 +170,69 @@ function displayTasks() {
         taskList.appendChild(dayDiv);
         taskList.appendChild(tasksContainer);
     }
+}*/
+
+// Exibe as tarefas na tela em ordem dos dias da semana
+function displayTasks() {
+    taskList.innerHTML = ""; // Limpa a lista antes de recriá-la
+
+    weekDays.forEach(day => {
+        if (tasks[day] && tasks[day].length > 0) {
+            let dayDiv = document.createElement("div");
+            dayDiv.classList.add("day");
+
+            let dayTitle = document.createElement("span");
+            dayTitle.textContent = day;
+
+            let deleteDayBtn = document.createElement("button");
+            deleteDayBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
+            deleteDayBtn.classList.add("delete-day");
+            deleteDayBtn.onclick = () => deleteDay(day);
+
+            dayDiv.appendChild(dayTitle);
+            dayDiv.appendChild(deleteDayBtn);
+
+            let tasksContainer = document.createElement("div");
+            tasksContainer.classList.add("tasks-container");
+
+            tasks[day].forEach((task, index) => {
+                let taskDiv = document.createElement("div");
+                taskDiv.classList.add("task");
+
+                let checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.checked = task.completed;
+                checkbox.classList.add("checkbox");
+                checkbox.onclick = () => toggleTask(day, index);
+
+                let taskSpan = document.createElement("span");
+                taskSpan.textContent = task.text;
+                if (task.completed) {
+                    taskSpan.classList.add("completed");
+                }
+
+                let statusSpan = document.createElement("span");
+                statusSpan.classList.add("status");
+                statusSpan.textContent = task.completed ? "Concluída" : "Pendente";
+                statusSpan.classList.toggle("completed", task.completed);
+
+                let deleteTaskBtn = document.createElement("button");
+                deleteTaskBtn.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+                deleteTaskBtn.classList.add("delete-task");
+                deleteTaskBtn.onclick = () => deleteTask(day, index);
+
+                taskDiv.appendChild(checkbox);
+                taskDiv.appendChild(taskSpan);
+                taskDiv.appendChild(statusSpan);
+                taskDiv.appendChild(deleteTaskBtn);
+
+                tasksContainer.appendChild(taskDiv);
+            });
+
+            taskList.appendChild(dayDiv);
+            taskList.appendChild(tasksContainer);
+        }
+    });
 }
 
 // Carrega as tarefas ao abrir a página
