@@ -33,7 +33,7 @@
         <div class="task-input-container">
           <input type="text" id="taskInput" placeholder="Digite sua nova tarefa...">
                 <select id="daySelect"></select>
-                <button class="bookmarkBtn" onclick="addTask()">
+                <button class="bookmarkBtn" onclick="addTask()" onclick="openModal()">
                     <span class="IconContainer">
                       <svg viewBox="0 0 384 512" height="0.9em" class="icon">
                         <path
@@ -43,6 +43,20 @@
                     </span>
                     <p class="text">Add</p>
                   </button>
+                  <!--Modal-->
+                  <div id="repeatTaskModal" class="modal">
+                    <div class="modal-content">
+                        <h3>Repetir Tarefa?</h3>
+                        <p>Selecione os dias em que deseja repetir esta tarefa:</p>
+                        <div id="repeatDays"></div>
+                        <div class="modal-buttons">
+                            <button id="confirmRepeat">Confirmar</button>
+                            <button id="cancelRepeat">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+                  
+                  
         </div>
 
         <div id="taskList" class="task-list"></div>

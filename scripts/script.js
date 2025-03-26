@@ -2,17 +2,6 @@ const daySelect = document.getElementById("daySelect");
 const taskList = document.getElementById("taskList");
 let tasks = JSON.parse(localStorage.getItem("tasks")) || {}; // Carrega as tarefas salvas
 
-// Função para preencher o dropdown com os dias do mês
-/*function populateDaySelect() {
-    daySelect.innerHTML = ""; // Limpa para evitar duplicatas
-    for (let i = 1; i <= 30; i++) {
-        let option = document.createElement("option");
-        option.value = `Dia ${i}`;
-        option.textContent = `Dia ${i}`;
-        daySelect.appendChild(option);
-    }
-}*/
-
 // Dias da semana em ordem correta
 const weekDays = [
      "Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira",
@@ -34,7 +23,10 @@ function saveTasks() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
-// Adicionar uma nova tarefa
+//MODAL
+
+let newTaskText = ""; // Armazena temporariamente a tarefa antes da confirmação
+
 function addTask() {
     const taskInput = document.getElementById("taskInput");
     const taskText = taskInput.value.trim();
@@ -45,15 +37,68 @@ function addTask() {
         return;
     }
 
+    // Guarda a tarefa temporariamente
+    newTaskText = taskText;
+
+    // Exibe o modal
+    showRepeatTaskModal();
+}
+
+// Função para exibir o modal
+function showRepeatTaskModal() {
+    const modal = document.getElementById("repeatTaskModal");
+    const repeatDaysContainer = document.getElementById("repeatDays");
+
+    // Limpa e recria os checkboxes
+    repeatDaysContainer.innerHTML = "";
+    weekDays.forEach(day => {
+        let checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.value = day;
+        checkbox.id = `repeat-${day}`;
+        
+        let label = document.createElement("label");
+        label.htmlFor = checkbox.id;
+        label.textContent = day;
+
+        repeatDaysContainer.appendChild(checkbox);
+        repeatDaysContainer.appendChild(label);
+        repeatDaysContainer.appendChild(document.createElement("br"));
+    });
+
+    modal.style.display = "flex";
+}
+
+// Fechar modal
+document.getElementById("cancelRepeat").addEventListener("click", () => {
+    document.getElementById("repeatTaskModal").style.display = "none";
+    document.getElementById("taskInput").value = "";
+});
+
+// Confirmar repetição da tarefa
+document.getElementById("confirmRepeat").addEventListener("click", () => {
+    const selectedDays = [...document.querySelectorAll("#repeatDays input:checked")].map(input => input.value);
+    const selectedDay = daySelect.value;
+
     if (!tasks[selectedDay]) {
         tasks[selectedDay] = [];
     }
+    tasks[selectedDay].push({ text: newTaskText, completed: false });
 
-    tasks[selectedDay].push({ text: taskText, completed: false });
-    taskInput.value = "";
+    selectedDays.forEach(day => {
+        if (!tasks[day]) {
+            tasks[day] = [];
+        }
+        tasks[day].push({ text: newTaskText, completed: false });
+    });
+
     saveTasks();
-    displayTasks();  // Atualiza a lista de tarefas
-}
+    displayTasks();
+
+    // Esconde o modal e reseta o input
+    document.getElementById("repeatTaskModal").style.display = "none";
+    document.getElementById("taskInput").value = "";
+});
 
 // Alternar estado de conclusão da tarefa
 function toggleTask(day, index) {
@@ -78,99 +123,6 @@ function deleteDay(day) {
     saveTasks();
     displayTasks();
 }
-
-// Exibir tarefas
-/*function displayTasks() {
-    taskList.innerHTML = ""; // Limpa a lista antes de recriá-la
-
-    for (const [day, taskArray] of Object.entries(tasks)) {
-        let dayDiv = document.createElement("div");
-        dayDiv.classList.add("day");
-
-        let dayTitle = document.createElement("span");
-        dayTitle.textContent = day;
-
-        let deleteDayBtn = document.createElement("button");
-        deleteDayBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
-        deleteDayBtn.classList.add("delete-day");
-        deleteDayBtn.onclick = () => deleteDay(day);
-
-        dayDiv.appendChild(dayTitle);
-        dayDiv.appendChild(deleteDayBtn);
-
-        let tasksContainer = document.createElement("div");
-        tasksContainer.classList.add("tasks-container");
-
-        taskArray.forEach((task, index) => {
-            let taskDiv = document.createElement("div");
-            taskDiv.classList.add("task");
-
-            let checkbox = document.createElement("input");
-            checkbox.type = "checkbox";
-            checkbox.checked = task.completed;
-            checkbox.classList.add("checkbox");
-            checkbox.onclick = () => toggleTask(day, index);
-
-            let taskSpan = document.createElement("span");
-            taskSpan.textContent = task.text;
-            if (task.completed) {
-                taskSpan.classList.add("completed");
-            }
-
-            taskSpan.onclick = function () {
-                if (task.completed) {
-                    return;
-                }
-
-                let input = document.createElement('input');
-                input.type = "text";
-                input.value = task.text; // vai colocar o texto atual no input
-
-                input.onblur = function () {
-                    task.text = input.value.trim(); // vai atualizar o texto da tarefa
-                    saveTasks();
-                    displayTasks();
-                };
-
-                input.onkeydown = function (event) {
-                    if (event.key === "Enter") {
-                        input.blur(); // vai focar no input e, assim, disparar o evento blur
-                    }
-                };
-                taskDiv.replaceChild(input, taskSpan);
-                input.focus();
-                
-            }
-
-            let statusSpan = document.createElement("span");
-            statusSpan.classList.add("status");
-            if (task.completed) {
-                statusSpan.classList.add("completed");
-                statusSpan.textContent = "Concluída";
-            }
-
-            let taskButtonsDiv = document.createElement("div");
-            taskButtonsDiv.classList.add("task-buttons");
-
-            let deleteTaskBtn = document.createElement("button");
-            deleteTaskBtn.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
-            deleteTaskBtn.classList.add("delete-task");
-            deleteTaskBtn.onclick = () => deleteTask(day, index);
-
-            taskButtonsDiv.appendChild(deleteTaskBtn);
-
-            taskDiv.appendChild(checkbox);
-            taskDiv.appendChild(taskSpan);
-            taskDiv.appendChild(statusSpan);
-            taskDiv.appendChild(taskButtonsDiv);
-
-            tasksContainer.appendChild(taskDiv);
-        });
-
-        taskList.appendChild(dayDiv);
-        taskList.appendChild(tasksContainer);
-    }
-}*/
 
 // Exibe as tarefas na tela em ordem dos dias da semana
 function displayTasks() {
@@ -246,6 +198,7 @@ if ('serviceWorker' in navigator) {
     .then(() => console.log("Service Worker registrado com sucesso!"))
     .catch(error => console.log("Erro ao registrar Service Worker:", error));
 }
+
 
 
 
